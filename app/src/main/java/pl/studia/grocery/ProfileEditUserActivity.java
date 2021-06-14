@@ -1,12 +1,12 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -49,13 +49,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class ProfileEditSellerActivity extends AppCompatActivity implements LocationListener {
+public class ProfileEditUserActivity extends AppCompatActivity implements LocationListener {
 
     private ImageButton backBtn, gpsBtn;
     private ImageView profileIv;
-    private EditText nameEt, shopNameEt, phoneEt, deliveryFeeEt,  countryEt, stateEt, cityEt, addressEt;
-    private SwitchCompat shopOpenSwitch;
+    private EditText nameEt, phoneEt, countryEt, stateEt, cityEt, addressEt;
     private Button updateBtn;
+
 
 
     private static final int LOCATION_REQUEST_CODE = 100;
@@ -71,32 +71,28 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
 
     private Uri image_uri;
 
-    private double latitude = 0.0;
-    private double longitude = 0.0;
+
+    private double latitude=0.0, longitude=0.0;
 
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private LocationManager locationManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_edit_seller);
+        setContentView(R.layout.activity_profile_edit_user);
 
         backBtn = findViewById(R.id.backBtn);
         gpsBtn = findViewById(R.id.gpsBtn);
         profileIv = findViewById(R.id.profileIv);
         nameEt = findViewById(R.id.nameEt);
-        shopNameEt = findViewById(R.id.shopNameEt);
         phoneEt = findViewById(R.id.phoneEt);
-        deliveryFeeEt = findViewById(R.id.deliveryFeeEt);
         countryEt = findViewById(R.id.countryEt);
         stateEt = findViewById(R.id.stateEt);
         cityEt = findViewById(R.id.cityEt);
         addressEt = findViewById(R.id.addressEt);
-        shopOpenSwitch = findViewById(R.id.shopOpenSwitch);
         updateBtn = findViewById(R.id.updateBtn);
 
         locationPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
@@ -111,7 +107,6 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
         checkUser();
 
 
-
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,11 +114,11 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
             }
         });
         profileIv.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             showImagePickDialog();
-                                         }
-                                     });
+            @Override
+            public void onClick(View v) {
+                showImagePickDialog();
+            }
+        });
         gpsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,11 +126,10 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                     detectLocation();
                 }
 
-                    else{
-                        requestLocationPermission();
+                else{
+                    requestLocationPermission();
 
-                    }
-
+                }
 
             }
         });
@@ -144,26 +138,29 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
             public void onClick(View v) {
                 inputData();
 
+
+
             }
         });
 
     }
-    private String name, shopName, phone, deliveryFee, country, state, city, address;
-    private boolean shopOpen;
 
+    private String name, phone, country, state, city, address;
     private void inputData(){
 
         name = nameEt.getText().toString().trim();
-        shopName = shopNameEt.getText().toString().trim();
+
         phone = nameEt.getText().toString().trim();
-        deliveryFee = deliveryFeeEt.getText().toString().trim();
+
         country = countryEt.getText().toString().trim();
         state = stateEt.getText().toString().trim();
         city = cityEt.getText().toString().trim();
         address = addressEt.getText().toString().trim();
-        shopOpen = shopOpenSwitch.isChecked();
 
-         updateProfile();
+
+        updateProfile();
+
+
 
     }
     private void updateProfile(){
@@ -171,27 +168,27 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
         progressDialog.show();
 
         if (image_uri ==null){
-          HashMap<String, Object> hashMap = new HashMap();
+            HashMap<String, Object> hashMap = new HashMap();
             hashMap.put("name",""+name);
-            hashMap.put("shopName",""+shopName);
+
             hashMap.put("phone",""+phone);
-            hashMap.put("deliveryFee",""+deliveryFee);
+
             hashMap.put("country",""+country);
             hashMap.put("state",""+state);
             hashMap.put("city",""+city);
             hashMap.put("address",""+address);
             hashMap.put("longitude",""+longitude);
             hashMap.put("latitude",""+latitude);
-            hashMap.put("shopName",""+shopOpen);
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
             ref.child(firebaseAuth.getUid()).updateChildren(hashMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
 
                             progressDialog.dismiss();
-                            Toast.makeText(ProfileEditSellerActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileEditUserActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
 
 
 
@@ -203,7 +200,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ProfileEditSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileEditUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -226,26 +223,27 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                             if (uriTask.isSuccessful()){
                                 HashMap<String, Object> hashMap = new HashMap();
                                 hashMap.put("name",""+name);
-                                hashMap.put("shopName",""+shopName);
+
                                 hashMap.put("phone",""+phone);
-                                hashMap.put("deliveryFee",""+deliveryFee);
+
                                 hashMap.put("country",""+country);
                                 hashMap.put("state",""+state);
                                 hashMap.put("city",""+city);
-                                hashMap.put("address",""+latitude);
+                                hashMap.put("address",""+address);
                                 hashMap.put("longitude",""+longitude);
                                 hashMap.put("latitude",""+latitude);
-                                hashMap.put("shopName",""+shopOpen);
-                                hashMap.put("profileImage",""+downloadImageUri);
 
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
                                 ref.child(firebaseAuth.getUid()).updateChildren(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
 
                                                 progressDialog.dismiss();
-                                                Toast.makeText(ProfileEditSellerActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ProfileEditUserActivity.this,"Profile updated",Toast.LENGTH_SHORT).show();
+
+
 
 
 
@@ -255,7 +253,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(ProfileEditSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ProfileEditUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                                             }
                                         });
@@ -269,7 +267,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ProfileEditSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileEditUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -280,8 +278,8 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
 
     }
     private void checkUser(){
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user==null){
+        FirebaseUser user  = firebaseAuth.getCurrentUser();
+        if (user ==null){
             startActivity (new Intent(getApplicationContext(), LoginActivity.class));
             finish();
         }
@@ -291,7 +289,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
 
     }
     private void loadMyInfo(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
         ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
                 .addValueEventListener(new ValueEventListener(){
                     @Override
@@ -302,17 +300,17 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                             String city = "" + ds.child("city").getValue();
                             String state = "" + ds.child("state").getValue();
                             String country = "" + ds.child("country").getValue();
-                            String deliveryFee = "" + ds.child("deliveryFee").getValue();
+
                             String email = "" + ds.child("email").getValue();
                             latitude = Double.parseDouble("" + ds.child("latitude").getValue());
                             longitude = Double.parseDouble("" + ds.child("longitude").getValue());
+
                             String name = "" + ds.child("name").getValue();
                             String online = "" + ds.child("online").getValue();
                             String phone = "" + ds.child("phone").getValue();
                             String profileImage = "" + ds.child("profileImage").getValue();
                             String timestamp = "" + ds.child("timestamp").getValue();
-                            String shopName = "" + ds.child("shopName").getValue();
-                            String shopOpen = "" + ds.child("shopOpen").getValue();
+
                             String uid = "" + ds.child("iud").getValue();
 
                             nameEt.setText(name);
@@ -321,20 +319,14 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                             stateEt.setText(state);
                             cityEt.setText(city);
                             addressEt.setText(address);
-                            shopNameEt.setText(shopName);
-                            deliveryFeeEt.setText(deliveryFee);
 
-                            if (shopOpen.equals("true")) {
-                                shopOpenSwitch.setChecked(true);
-                            } else {
-                                shopOpenSwitch.setChecked(false);
-                            }
 
                             try {
                                 Picasso.get().load(profileImage).placeholder(R.drawable.ic_baseline_store_24).into(profileIv);
                             }
                             catch (Exception e) {
                                 profileIv.setImageResource(R.drawable.ic_baseline_person_24);
+
 
                             }
                         }
@@ -344,6 +336,8 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                     public void onCancelled(@NonNull DatabaseError dataSnapshot){
 
                     }
+
+
 
 
                 });
@@ -373,10 +367,10 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                         }
                     }
 
-                    })
+                })
                 .show();
 
-        }
+    }
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
     }
@@ -406,7 +400,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
         startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
     }
     private void pickFromCamera(){
-        ContentValues contentValues = new ContentValues();
+        ContentValues contentValues = new ContentValues ();
         contentValues.put(MediaStore.Images.Media.TITLE, "Image Titile" );
         contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Image Description" );
 
@@ -415,6 +409,9 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+
+
+
 
     }
     private void detectLocation(){
@@ -442,6 +439,9 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
             cityEt.setText(city);
             addressEt.setText(address);
 
+
+
+
         }
         catch(Exception e) {
             Toast.makeText(this,""+e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -451,6 +451,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
 
     }
 
+
     @Override
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
@@ -458,18 +459,17 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
 
         findAddress();
     }
+
+
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
     @Override
     public void onProviderEnabled(String provider) {
-
     }
     @Override
     public void onProviderDisabled(String provider) {
         Toast.makeText(this, "Location is disabled", Toast.LENGTH_SHORT).show();
-
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -513,10 +513,8 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
 
             }
         }
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
 

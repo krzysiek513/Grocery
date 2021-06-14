@@ -1,4 +1,4 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

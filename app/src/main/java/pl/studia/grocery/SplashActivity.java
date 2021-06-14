@@ -1,4 +1,4 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
     }
     private void checkUserType()
     {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
         ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

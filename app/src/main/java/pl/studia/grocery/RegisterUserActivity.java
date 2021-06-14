@@ -1,4 +1,4 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -256,7 +256,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
             hashMap.put("online","true");
             hashMap.put("profileImage","");
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
             ref.child(firebaseAuth.getUid()).setValue(hashMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>()
                     {

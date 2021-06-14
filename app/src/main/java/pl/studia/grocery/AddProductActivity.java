@@ -1,4 +1,4 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -211,7 +211,7 @@ public class AddProductActivity extends AppCompatActivity {
             hashMap.put("timestamp",""+timestamp);
             hashMap.put("uid",""+firebaseAuth.getUid());
 
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Grocery");
             reference.child(firebaseAuth.getUid()).child("Products").child(timestamp).setValue(hashMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -258,7 +258,7 @@ public class AddProductActivity extends AppCompatActivity {
                                 hashMap.put("timestamp",""+timestamp);
                                 hashMap.put("uid",""+firebaseAuth.getUid());
 
-                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Grocery");
                                 reference.child(firebaseAuth.getUid()).child("Products").child(timestamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override

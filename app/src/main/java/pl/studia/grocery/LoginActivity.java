@@ -1,4 +1,4 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.grocery5.MainSellerActivity;
-import com.example.grocery5.MainUserActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -124,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("online","true");
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
         ref.child(firebaseAuth.getUid()).updateChildren(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>(){
                     @Override
@@ -143,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void checkUserType()
     {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
         ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

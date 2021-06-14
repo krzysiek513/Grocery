@@ -1,4 +1,4 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -255,7 +255,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             hashMap.put("shopOpen","true");
             hashMap.put("profileImage","");
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
             ref.child(firebaseAuth.getUid()).setValue(hashMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>()
                     {
@@ -313,7 +313,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                                 hashMap.put("shopOpen","true");
                                 hashMap.put("profileImage",""+downloadImageUri);
 
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Grocery");
                                 ref.child(firebaseAuth.getUid()).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>()
                                         {

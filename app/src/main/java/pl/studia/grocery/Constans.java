@@ -1,4 +1,4 @@
-package com.example.grocery5;
+package pl.studia.grocery;
 
 public class Constans {
     public static final String[] productCategories = {
